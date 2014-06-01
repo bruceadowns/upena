@@ -57,7 +57,7 @@ class NannyDestroyCallable implements Callable<Boolean> {
                             break;
                         } else {
                             checks++;
-                            deployLog.log("Waiting for Service:"+instancePath.toHumanReadableName()+" to start for " + checks + " time.", null);
+                            deployLog.log("Waiting for Service:" + instancePath.toHumanReadableName() + " to start for " + checks + " time.", null);
                             Thread.sleep(1000); // todo expose to config or to instance
                         }
                     }

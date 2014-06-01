@@ -1,0 +1,69 @@
+.dp-banner {}
+.dp-banner .topCenter{
+  background: url(images/dp-banner.topCenter.png) repeat-x;
+}
+.dp-banner .bottomCenter {
+  background: url(images/dp-banner.bottomCenter.png) repeat-x;
+}
+.dp-banner .middleLeft {
+  background: url(images/dp-banner.left.png) repeat-y;
+}
+.dp-banner .middleRight {
+  background: url(images/dp-banner.right.png) repeat-y;
+}
+.dp-banner .topLeftInner {
+  width: 4px;
+  height: 3px;
+  zoom: 1;
+}
+.dp-banner .topRightInner {
+  width: 4px;
+  height: 3px;
+  zoom: 1;
+}
+.dp-banner .bottomLeftInner {
+  width: 4px;
+  height: 4px;
+  zoom: 1;
+}
+.dp-banner .bottomRightInner {
+  width: 4px;
+  height: 4px;
+  zoom: 1;
+}
+.dp-banner .topLeft {
+  background: url(images/dp-banner.topLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-banner.topLeft.png) no-repeat 0px 0px;
+}
+.dp-banner .topRight {
+  background: url(images/dp-banner.topRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-banner.topRight.png) no-repeat 0px 0px;
+}
+.dp-banner .bottomLeft {
+  background: url(images/dp-banner.bottomLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-banner.bottomLeft.png) no-repeat 0px 0px;
+}
+.dp-banner .bottomRight {
+  background: url(images/dp-banner.bottomRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-banner.bottomRight.png) no-repeat 0px 0px;
+}
+* html .dp-banner .topLeftInner {
+  width: 4px;
+  height: 3px;
+  overflow: hidden;
+}
+* html .dp-banner .topRightInner {
+  width: 4px;
+  height: 3px;
+  overflow: hidden;
+}
+* html .dp-banner .bottomLeftInner {
+  width: 4px;
+  height: 4px;
+  overflow: hidden;
+}
+* html .dp-banner .bottomRightInner {
+  width: 4px;
+  height: 4px;
+  overflow: hidden;
+}

@@ -1,0 +1,69 @@
+.dp-main {}
+.dp-main .topCenter{
+  background: url(images/dp-main.topCenter.png) repeat-x;
+}
+.dp-main .bottomCenter {
+  background: url(images/dp-main.bottomCenter.png) repeat-x;
+}
+.dp-main .middleLeft {
+  background: url(images/dp-main.left.png) repeat-y;
+}
+.dp-main .middleRight {
+  background: url(images/dp-main.right.png) repeat-y;
+}
+.dp-main .topLeftInner {
+  width: 20px;
+  height: 124px;
+  zoom: 1;
+}
+.dp-main .topRightInner {
+  width: 20px;
+  height: 124px;
+  zoom: 1;
+}
+.dp-main .bottomLeftInner {
+  width: 20px;
+  height: 44px;
+  zoom: 1;
+}
+.dp-main .bottomRightInner {
+  width: 20px;
+  height: 44px;
+  zoom: 1;
+}
+.dp-main .topLeft {
+  background: url(images/dp-main.topLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-main.topLeft.png) no-repeat 0px 0px;
+}
+.dp-main .topRight {
+  background: url(images/dp-main.topRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-main.topRight.png) no-repeat 0px 0px;
+}
+.dp-main .bottomLeft {
+  background: url(images/dp-main.bottomLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-main.bottomLeft.png) no-repeat 0px 0px;
+}
+.dp-main .bottomRight {
+  background: url(images/dp-main.bottomRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-main.bottomRight.png) no-repeat 0px 0px;
+}
+* html .dp-main .topLeftInner {
+  width: 20px;
+  height: 124px;
+  overflow: hidden;
+}
+* html .dp-main .topRightInner {
+  width: 20px;
+  height: 124px;
+  overflow: hidden;
+}
+* html .dp-main .bottomLeftInner {
+  width: 20px;
+  height: 44px;
+  overflow: hidden;
+}
+* html .dp-main .bottomRightInner {
+  width: 20px;
+  height: 44px;
+  overflow: hidden;
+}

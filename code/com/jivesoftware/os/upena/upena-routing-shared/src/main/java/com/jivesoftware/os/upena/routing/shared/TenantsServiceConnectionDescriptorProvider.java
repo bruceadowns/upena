@@ -29,8 +29,8 @@ public class TenantsServiceConnectionDescriptorProvider<T> {
     private final ConnectionDescriptorsProvider connectionsProvider;
     private final String connectToServiceNamed;
     private final String portName;
-    private final Map<String, ConnectionDescriptors> userIdsConnectionDescriptors = new ConcurrentHashMap<>();
-    private final Map<T, String> tenantToUserId = new ConcurrentHashMap<>();
+    private final Map<String, ConnectionDescriptors> releaseGroupToConnectionDescriptors = new ConcurrentHashMap<>();
+    private final Map<T, String> tenantToReleaseGroup = new ConcurrentHashMap<>();
 
     public TenantsServiceConnectionDescriptorProvider(String instanceId,
             ConnectionDescriptorsProvider connectionsProvider,
@@ -43,48 +43,56 @@ public class TenantsServiceConnectionDescriptorProvider<T> {
     }
 
     void invalidateAll() {
-        tenantToUserId.clear();
-        userIdsConnectionDescriptors.clear();
+        tenantToReleaseGroup.clear();
+        releaseGroupToConnectionDescriptors.clear();
     }
 
     public void invalidateTenant(T tenantId) {
-        tenantToUserId.remove(tenantId);
+        tenantToReleaseGroup.remove(tenantId);
     }
 
     public TenantsRoutingServiceReport getRoutingReport() {
         TenantsRoutingServiceReport report = new TenantsRoutingServiceReport();
-        report.tenantToUserId.putAll(tenantToUserId);
-        report.userIdsConnectionDescriptors.putAll(userIdsConnectionDescriptors);
+        report.tenantToReleaseGroup.putAll(tenantToReleaseGroup);
+        report.releaseGroupToConnectionDescriptors.putAll(releaseGroupToConnectionDescriptors);
         return report;
     }
 
     public ConnectionDescriptors getConnections(T tenantId) {
         if (tenantId == null) {
-            return new ConnectionDescriptors(System.currentTimeMillis(), Collections.<ConnectionDescriptor>emptyList());
+            return new ConnectionDescriptors(System.currentTimeMillis(), Collections.<ConnectionDescriptor>emptyList(),
+                    Collections.<ConnectionDescriptor>emptyList());
         }
         ConnectionDescriptors connections;
-        String releaseGroup = tenantToUserId.get(tenantId);
+        String releaseGroup = tenantToReleaseGroup.get(tenantId);
         if (releaseGroup != null) {
-            connections = userIdsConnectionDescriptors.get(releaseGroup);
+            connections = releaseGroupToConnectionDescriptors.get(releaseGroup);
             if (connections == null) {
-                connections = new ConnectionDescriptors(System.currentTimeMillis(), Collections.<ConnectionDescriptor>emptyList());
+                connections = new ConnectionDescriptors(System.currentTimeMillis(),
+                        Collections.<ConnectionDescriptor>emptyList(),
+                        Collections.<ConnectionDescriptor>emptyList());
             }
         } else {
             ConnectionDescriptorsResponse connectionsResponse = connectionsProvider.requestConnections(new ConnectionDescriptorsRequest(
                     tenantId.toString(), instanceId, connectToServiceNamed, portName));
             if (connectionsResponse == null) {
                 releaseGroup = "unknown";
-                connections = new ConnectionDescriptors(System.currentTimeMillis(), Collections.<ConnectionDescriptor>emptyList());
+                connections = new ConnectionDescriptors(System.currentTimeMillis(),
+                        Collections.<ConnectionDescriptor>emptyList(),
+                        Collections.<ConnectionDescriptor>emptyList());
             } else if (connectionsResponse.getReturnCode() < 0) {
                 releaseGroup = "unknown";
                 LOG.warn(Arrays.deepToString(connectionsResponse.getMessages().toArray()));
-                connections = new ConnectionDescriptors(System.currentTimeMillis(), Collections.<ConnectionDescriptor>emptyList());
+                connections = new ConnectionDescriptors(System.currentTimeMillis(),
+                        Collections.<ConnectionDescriptor>emptyList(),
+                        Collections.<ConnectionDescriptor>emptyList());
             } else {
                 releaseGroup = connectionsResponse.getReleaseGroup();
-                connections = new ConnectionDescriptors(System.currentTimeMillis(), connectionsResponse.getConnections());
+                connections = new ConnectionDescriptors(System.currentTimeMillis(), connectionsResponse.getConnections(),
+                        Collections.<ConnectionDescriptor>emptyList());
             }
-            tenantToUserId.put(tenantId, releaseGroup);
-            userIdsConnectionDescriptors.put(releaseGroup, connections);
+            tenantToReleaseGroup.put(tenantId, releaseGroup);
+            releaseGroupToConnectionDescriptors.put(releaseGroup, connections);
         }
         return connections;
     }

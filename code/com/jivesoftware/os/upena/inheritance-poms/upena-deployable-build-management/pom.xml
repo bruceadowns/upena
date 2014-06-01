@@ -24,6 +24,13 @@
         <deployable.artifact>lib/${project.build.finalName}.jar</deployable.artifact>
     </properties>
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>2.5</version>
+            </extension>
+        </extensions>
         <plugins>
         </plugins>
     </build>
@@ -200,6 +207,7 @@
         <profile>
             <id>deploy-service</id>
             <build>
+
                 <plugins>
                     <plugin>
                         <groupId>com.jivesoftware.os.upena</groupId>
@@ -214,8 +222,18 @@
                             </execution>
                         </executions>
                     </plugin>
+
+
                 </plugins>
             </build>
+            <distributionManagement>
+                <repository>
+                  <id>ftp-repository</id>
+                  <url>ftp://localhost:1975/booya</url>
+                </repository>
+              </distributionManagement>
         </profile>
     </profiles>
+
+
 </project>

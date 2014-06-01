@@ -24,12 +24,15 @@ public class ConnectionDescriptors {
 
     private final long timestamp;
     private final List<ConnectionDescriptor> connectionDescriptors;
+    private final List<ConnectionDescriptor> alternateConnectionDescriptors;
 
     @JsonCreator
     public ConnectionDescriptors(@JsonProperty("timestamp") long timestamp,
-            @JsonProperty("connectionDescriptors") List<ConnectionDescriptor> connectionDescriptors) {
+            @JsonProperty("connectionDescriptors") List<ConnectionDescriptor> connectionDescriptors,
+            @JsonProperty("alternateConnectionDescriptors") List<ConnectionDescriptor> alternateConnectionDescriptors) {
         this.timestamp = timestamp;
         this.connectionDescriptors = connectionDescriptors;
+        this.alternateConnectionDescriptors = alternateConnectionDescriptors;
     }
 
     public long getTimestamp() {
@@ -40,16 +43,25 @@ public class ConnectionDescriptors {
         return connectionDescriptors;
     }
 
+    public List<ConnectionDescriptor> getAlternateConnectionDescriptors() {
+        return alternateConnectionDescriptors;
+    }
+
     @Override
     public String toString() {
-        return "ConnectionDescriptors{" + "timestamp=" + timestamp + ", connectionDescriptors=" + connectionDescriptors + '}';
+        return "ConnectionDescriptors{"
+                + "timestamp=" + timestamp
+                + ", connectionDescriptors=" + connectionDescriptors
+                + ", alternateConnectionDescriptors=" + alternateConnectionDescriptors
+                + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 41 * hash + (int) (this.timestamp ^ (this.timestamp >>> 32));
-        hash = 41 * hash + Objects.hashCode(this.connectionDescriptors);
+        int hash = 5;
+        hash = 89 * hash + (int) (this.timestamp ^ (this.timestamp >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.connectionDescriptors);
+        hash = 89 * hash + Objects.hashCode(this.alternateConnectionDescriptors);
         return hash;
     }
 
@@ -68,6 +80,10 @@ public class ConnectionDescriptors {
         if (!Objects.equals(this.connectionDescriptors, other.connectionDescriptors)) {
             return false;
         }
+        if (!Objects.equals(this.alternateConnectionDescriptors, other.alternateConnectionDescriptors)) {
+            return false;
+        }
         return true;
     }
+
 }

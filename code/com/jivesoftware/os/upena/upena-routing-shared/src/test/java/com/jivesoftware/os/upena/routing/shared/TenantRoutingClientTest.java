@@ -54,7 +54,7 @@ public class TenantRoutingClientTest {
 
     private void initDescriptorsPool(long timestamp) {
         ConnectionDescriptor descriptor = new ConnectionDescriptor("localhost", 7777, Collections.EMPTY_MAP);
-        connectionDescriptors = new ConnectionDescriptors(timestamp, Arrays.asList(descriptor));
+        connectionDescriptors = new ConnectionDescriptors(timestamp, Arrays.asList(descriptor), Collections.<ConnectionDescriptor>emptyList());
         Mockito.when(tenantsServiceConnectionDescriptorProvider.getConnections(tenantId)).thenReturn(connectionDescriptors);
         Mockito.when(clientConnectionsFactory.createClient(connectionDescriptors)).thenReturn(testClient);
     }

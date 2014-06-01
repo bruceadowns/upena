@@ -95,13 +95,13 @@ public class TenantsServiceConnectionDescriptorsProviderTest {
         TenantsRoutingServiceReport routingReport = tenantsServiceConnectionPoolProvider.getRoutingReport();
         Assert.assertNotNull(routingReport);
 
-        Map<String, String> tenantToUser = routingReport.tenantToUserId;
+        Map<String, String> tenantToUser = routingReport.tenantToReleaseGroup;
         Assert.assertNotNull(tenantToUser);
         Assert.assertEquals(tenantToUser.size(), 1);
         String retreivedId = tenantToUser.get(tenantId);
         Assert.assertEquals(retreivedId, userId);
 
-        Map<String, ConnectionDescriptors> idtoPools = routingReport.userIdsConnectionDescriptors;
+        Map<String, ConnectionDescriptors> idtoPools = routingReport.releaseGroupToConnectionDescriptors;
         Assert.assertNotNull(idtoPools);
         Assert.assertEquals(idtoPools.size(), 1);
         idtoPools.get(userId);

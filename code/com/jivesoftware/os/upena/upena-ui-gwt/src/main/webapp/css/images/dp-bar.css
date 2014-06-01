@@ -1,0 +1,69 @@
+.dp-bar {}
+.dp-bar .topCenter{
+  background: url(images/dp-bar.topCenter.png) repeat-x;
+}
+.dp-bar .bottomCenter {
+  background: url(images/dp-bar.bottomCenter.png) repeat-x;
+}
+.dp-bar .middleLeft {
+  background: url(images/dp-bar.left.png) repeat-y;
+}
+.dp-bar .middleRight {
+  background: url(images/dp-bar.right.png) repeat-y;
+}
+.dp-bar .topLeftInner {
+  width: 12px;
+  height: 12px;
+  zoom: 1;
+}
+.dp-bar .topRightInner {
+  width: 12px;
+  height: 12px;
+  zoom: 1;
+}
+.dp-bar .bottomLeftInner {
+  width: 12px;
+  height: 12px;
+  zoom: 1;
+}
+.dp-bar .bottomRightInner {
+  width: 12px;
+  height: 12px;
+  zoom: 1;
+}
+.dp-bar .topLeft {
+  background: url(images/dp-bar.topLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-bar.topLeft.png) no-repeat 0px 0px;
+}
+.dp-bar .topRight {
+  background: url(images/dp-bar.topRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-bar.topRight.png) no-repeat 0px 0px;
+}
+.dp-bar .bottomLeft {
+  background: url(images/dp-bar.bottomLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-bar.bottomLeft.png) no-repeat 0px 0px;
+}
+.dp-bar .bottomRight {
+  background: url(images/dp-bar.bottomRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-bar.bottomRight.png) no-repeat 0px 0px;
+}
+* html .dp-bar .topLeftInner {
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+}
+* html .dp-bar .topRightInner {
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+}
+* html .dp-bar .bottomLeftInner {
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+}
+* html .dp-bar .bottomRightInner {
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
+}

@@ -1,0 +1,69 @@
+.dp-separator {}
+.dp-separator .topCenter{
+  background: url(images/dp-separator.topCenter.png) repeat-x;
+}
+.dp-separator .bottomCenter {
+  background: url(images/dp-separator.bottomCenter.png) repeat-x;
+}
+.dp-separator .middleLeft {
+  background: url(images/dp-separator.left.png) repeat-y;
+}
+.dp-separator .middleRight {
+  background: url(images/dp-separator.right.png) repeat-y;
+}
+.dp-separator .topLeftInner {
+  width: 8px;
+  height: 6px;
+  zoom: 1;
+}
+.dp-separator .topRightInner {
+  width: 8px;
+  height: 6px;
+  zoom: 1;
+}
+.dp-separator .bottomLeftInner {
+  width: 8px;
+  height: 6px;
+  zoom: 1;
+}
+.dp-separator .bottomRightInner {
+  width: 8px;
+  height: 6px;
+  zoom: 1;
+}
+.dp-separator .topLeft {
+  background: url(images/dp-separator.topLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-separator.topLeft.png) no-repeat 0px 0px;
+}
+.dp-separator .topRight {
+  background: url(images/dp-separator.topRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-separator.topRight.png) no-repeat 0px 0px;
+}
+.dp-separator .bottomLeft {
+  background: url(images/dp-separator.bottomLeft.png) no-repeat 0px 0px;
+  -background: url(images/dp-separator.bottomLeft.png) no-repeat 0px 0px;
+}
+.dp-separator .bottomRight {
+  background: url(images/dp-separator.bottomRight.png) no-repeat 0px 0px;
+  -background: url(images/dp-separator.bottomRight.png) no-repeat 0px 0px;
+}
+* html .dp-separator .topLeftInner {
+  width: 8px;
+  height: 6px;
+  overflow: hidden;
+}
+* html .dp-separator .topRightInner {
+  width: 8px;
+  height: 6px;
+  overflow: hidden;
+}
+* html .dp-separator .bottomLeftInner {
+  width: 8px;
+  height: 6px;
+  overflow: hidden;
+}
+* html .dp-separator .bottomRightInner {
+  width: 8px;
+  height: 6px;
+  overflow: hidden;
+}

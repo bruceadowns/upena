@@ -50,6 +50,7 @@ import com.jivesoftware.os.jive.utils.ordered.id.OrderIdProvider;
 import com.jivesoftware.os.jive.utils.ordered.id.OrderIdProviderImpl;
 import com.jivesoftware.os.server.http.jetty.jersey.server.InitializeRestfulServer;
 import com.jivesoftware.os.server.http.jetty.jersey.server.JerseyEndpoints;
+import com.jivesoftware.os.server.http.jetty.jersey.server.WarEndpoint;
 import com.jivesoftware.os.upena.config.UpenaConfigRestEndpoints;
 import com.jivesoftware.os.upena.config.UpenaConfigStore;
 import com.jivesoftware.os.upena.routing.shared.InstanceChanged;
@@ -70,12 +71,20 @@ import com.jivesoftware.os.upena.uba.service.UbaServiceInitializer;
 import com.jivesoftware.os.upena.uba.service.endpoints.UbaServiceRestEndpoints;
 import de.ruedigermoeller.serialization.FSTConfiguration;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import org.apache.ftpserver.FtpServer;
+import org.apache.ftpserver.FtpServerFactory;
+import org.apache.ftpserver.ftplet.UserManager;
+import org.apache.ftpserver.listener.ListenerFactory;
+import org.apache.ftpserver.usermanager.ClearTextPasswordEncryptor;
+import org.apache.ftpserver.usermanager.impl.PropertiesUserManager;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -88,12 +97,11 @@ public class Main {
 
     public void run(String[] args) throws Exception {
 
-        String hostname = args[0];
+        String hostname = (args == null) ? "locahost" : ((args.length > 0) ? args[0] : "localhost");
         int port = Integer.parseInt(System.getProperty("amza.port", "1175"));
         String multicastGroup = System.getProperty("amza.discovery.group", "225.4.5.6");
         int multicastPort = Integer.parseInt(System.getProperty("amza.discovery.port", "1123"));
         String clusterName = (args.length > 1 ? args[1] : null);
-
 
         RingHost ringHost = new RingHost(hostname, port); // TODO include rackId
         final OrderIdProvider orderIdProvider = new OrderIdProviderImpl(new Random().nextInt(512)); // todo need a better way to create writter id.
@@ -118,14 +126,13 @@ public class Main {
                 BinaryRowWriter writer = new BinaryRowWriter(filer);
                 BinaryRowMarshaller rowMarshaller = new BinaryRowMarshaller();
 
-
                 RowsIndexProvider tableIndexProvider = new RowsIndexProvider() {
 
                     @Override
                     public RowsIndex createRowsIndex(TableName tableName) throws Exception {
                         final DB db = DBMaker.newDirectMemoryDB()
-                            .closeOnJvmShutdown()
-                            .make();
+                                .closeOnJvmShutdown()
+                                .make();
                         BTreeMap<RowIndexKey, RowIndexValue> treeMap = db.getTreeMap(tableName.getTableName());
                         return new MemoryRowsIndex(treeMap, new Flusher() {
 
@@ -255,6 +262,10 @@ public class Main {
 
         InitializeRestfulServer initializeRestfulServer = new InitializeRestfulServer(port, "UpenaNode", 128, 10000);
         initializeRestfulServer.addContextHandler("/", jerseyEndpoints);
+        WarEndpoint warEndpoint = new WarEndpoint(
+                "/home/jonathan/.m2/repository/com/jivesoftware/os/upena/upena-ui-gwt/1.0-SNAPSHOT/upena-ui-gwt-1.0-SNAPSHOT.war");
+        initializeRestfulServer.addContextHandler("/admin", warEndpoint);
+
         ServiceHandle serviceHandle = initializeRestfulServer.build();
         serviceHandle.start();
 
@@ -289,6 +300,50 @@ public class Main {
             System.out.println("-----------------------------------------------------------------------");
             System.out.println("|     Amze Service is in manual Discovery mode.  No cluster name was specified");
             System.out.println("-----------------------------------------------------------------------");
+        }
+
+        // TODO move FTp out into its won module.
+        try {
+            int ftpPort = Integer.parseInt(System.getProperty("ftp.repo.port", "1975"));
+            FtpServerFactory serverFactory = new FtpServerFactory();
+            ListenerFactory factory = new ListenerFactory();
+            // set the port of the listener
+            factory.setPort(ftpPort);
+            // replace the default listener
+            serverFactory.addListener("default", factory.createListener());
+
+            File properties = new File("./ftpProperties.properties");
+            if (!properties.exists()) {
+                Properties prop = new Properties();
+                prop.put("ftpserver.user.admin.homedirectory", "/home/jonathan/ftp");
+                prop.put("ftpserver.user.admin.userpassword", "admin");
+                prop.put("ftpserver.user.admin.enableflag=", "true");
+                prop.put("ftpserver.user.admin.writepermission", "true");
+                prop.put("ftpserver.user.admin.idletime", "0");
+                prop.put("ftpserver.user.admin.maxloginnumber", "0");
+                prop.put("ftpserver.user.admin.maxloginperip", "0");
+                prop.put("ftpserver.user.admin.uploadrate", "0");
+                prop.put("ftpserver.user.admin.downloadrate", "0");
+
+                FileOutputStream output = new FileOutputStream(properties);
+                prop.store(output, null);
+            }
+            UserManager um = new PropertiesUserManager(new ClearTextPasswordEncryptor(), properties, "admin");
+            serverFactory.setUserManager(um);
+            // start the server
+            FtpServer server = serverFactory.createServer();
+            server.start();
+
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("|      FTP Repository Service Online");
+            System.out.println("-----------------------------------------------------------------------");
+        } catch (Exception x) {
+            Throwable t = x;
+            t.printStackTrace();
+            while (t.getCause() != null) {
+                t = t.getCause();
+                t.printStackTrace();
+            }
         }
     }
 }

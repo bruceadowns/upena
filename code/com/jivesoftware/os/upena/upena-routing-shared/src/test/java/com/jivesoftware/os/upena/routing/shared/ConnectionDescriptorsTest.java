@@ -18,6 +18,7 @@ package com.jivesoftware.os.upena.routing.shared;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.testng.Assert;
@@ -35,7 +36,7 @@ public class ConnectionDescriptorsTest {
         ConnectionDescriptor cd1 = new ConnectionDescriptor("host1", 1, properties);
         ConnectionDescriptor cd2 = new ConnectionDescriptor("host2", 2, properties);
 
-        ConnectionDescriptors a = new ConnectionDescriptors(3, Arrays.asList(cd1, cd2));
+        ConnectionDescriptors a = new ConnectionDescriptors(3, Arrays.asList(cd1, cd2), Collections.<ConnectionDescriptor>emptyList());
 
         Assert.assertEquals(a.getTimestamp(), 3);
         Assert.assertEquals(a.getConnectionDescriptors(), Arrays.asList(cd1, cd2));
